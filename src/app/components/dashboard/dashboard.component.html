@@ -1,0 +1,106 @@
+<h1 class="p-4 text-center">DASHBOARD</h1>
+
+<div class="container" *ngIf="!loading; else spinner">
+
+  <div *ngIf="!covidErr">
+    <div class="row my-5">
+
+      <div class="col-md-6">
+        <form [formGroup]="form">
+          <label for="countries">Select a country</label>
+          <select formControlName="countries">
+            <option *ngFor="let country of countriesList" [value]="country">
+              {{ country }}
+            </option>
+          </select>
+        </form>
+      </div>
+  
+      <div class="col-md-6 d-flex justify-content-end" [ngClass]="{invisible: !countryData}">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span class="fw-bold">Country:</span>
+            {{ (countryData?.name.common | uppercase) }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Language:</span>
+            {{ (language | uppercase) }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Currency:</span>
+            {{ (currency.name | uppercase) + (currency.symbol ? ' (' + currency.symbol + ')' : '') }}
+          </li>
+          <li class="list-group-item">
+            <span class="fw-bold">Capital:</span>
+            {{ countryData?.capital[0] | uppercase }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="my-4 pb-5">
+      <h2 class="text-center my-5">COVID19 Data ({{ country }})</h2>
+  
+      <table class="table table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">Province</th>
+            <th scope="col">Confirmed</th>
+            <th scope="col">Recovered</th>
+            <th scope="col">Deaths</th>
+            <th scope="col">Last Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stat of covid19StatsCountry">
+            <td>{{ stat.province || '--' }}</td>
+            <td>{{ stat.confirmed || '--' }}</td>
+            <td>{{ stat.recovered || '--' }}</td>
+            <td>{{ stat.deaths || '--' }}</td>
+            <td>{{ stringToDate(stat.lastUpdate) || '--' }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <div class="text-end">
+        <small>Source: <a href="https://coronavirus.jhu.edu/map.html">Johns Hopkins University</a></small>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-5" *ngIf="chuckJoke">
+    <figure>
+      <blockquote class="blockquote">
+        <p>{{ chuckJoke }}</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        Random Chuck Norris Joke
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="py-5 mb-5" *ngIf="numberFact">
+    <figure>
+      <blockquote class="blockquote">
+        <p>{{ numberFact }}</p>
+      </blockquote>
+      <figcaption class="blockquote-footer">
+        Random Interesting Number Fact
+      </figcaption>
+    </figure>
+  </div>
+
+</div>
+
+<ng-template #spinner>
+  <div id="loading">
+    <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+    </div>
+  </div>
+</ng-template>

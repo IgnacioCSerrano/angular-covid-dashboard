@@ -1,0 +1,10 @@
+{
+  "/covid19-api": {
+    "target": "https://covid19-api.weedmark.systems/api/v1",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/covid19-api": ""
+    }
+  }
+}
